@@ -1,28 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Super Todo List</title>
-</head>
-<body>
+{% extends "main/base.html" %}
+
+{% block title %} Home {{ block.super }}{% endblock title %}
+
+{% block main_content %}
   <h1>{{ app_name }}</h1>
   <p>Today is {{ today }}</p>
   <h3>Our Todos</h3>
-  {% for todo in todos %}
-    {% if not todo.done %}
-      <p>{{todo.id}} {{todo.title|upper}} {{todo.description}} {{todo.done}}</p>
-    {% endif %}
-  {% endfor %}
-  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-    when an unknown printer took a galley of type and scrambled it to make a type
-    specimen book. It has survived not only five centuries, but also the leap into
-    electronic typesetting, remaining essentially unchanged. It was popularised in
-    the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-    and more recently with desktop publishing software like Aldus PageMaker including
-    versions of Lorem Ipsum.
-  </p>
-</body>
-</html>
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Done</th>
+        <th scope="col">Due date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for todo in todos %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{% url 'todo_update' todo_id=todo.pk %}">{{ todo.title }}</a></td>
+          <td>{{ todo.description|truncatewords:5 }}</td>
+          <td>{{ todo.done|yesno:"Yes,No" }}</td>
+          <td>{{ todo.due_date }}</td>
+          <td><a class="btn btn-info" href="{% url 'todo_detail' todo_id=todo.pk %}">Show</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock main_content %}

@@ -12,3 +12,4 @@ local_settings.py
 /static
 /media
 td_venv/
+bootstrap.min.css
